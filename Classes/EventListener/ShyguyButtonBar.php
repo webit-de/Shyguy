@@ -10,7 +10,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class ShyguyButtonBar {
+class ShyguyButtonBar
+{
     public function __invoke(ModifyButtonBarEvent $event): void
     {
         /** @var PageRenderer $pageRenderer */
@@ -33,8 +34,45 @@ class ShyguyButtonBar {
                 ->setIcon($iconFactory->getIcon('insert-soft-hyphen', Icon::SIZE_SMALL))
                 ->setShowLabelText(true);
 
-            $pos = max(array_keys($buttons[ButtonBar::BUTTON_POSITION_LEFT])) + 1;
-            $buttons[ButtonBar::BUTTON_POSITION_LEFT][$pos][] = $insertSoftHyphen;
+            $insertSuperscript = $event->getButtonBar()->makeLinkButton()
+                ->setHref('#insertSuperscript')
+                ->setTitle(
+                    $GLOBALS['LANG']->sL(
+                        'LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_supercript'
+                    )
+                )
+                ->setIcon($iconFactory->getIcon('insert-superscript', Icon::SIZE_SMALL));
+
+            $insertSubscript = $event->getButtonBar()->makeLinkButton()
+                ->setHref('#insertSubscript')
+                ->setTitle(
+                    $GLOBALS['LANG']->sL(
+                        'LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_subscript'
+                    )
+                )
+                ->setIcon($iconFactory->getIcon('insert-subscript', Icon::SIZE_SMALL));
+
+            $insertQuotationMarks = $event->getButtonBar()->makeLinkButton()
+                ->setHref('#insertQuotationMarks')
+                ->setTitle(
+                    $GLOBALS['LANG']->sL(
+                        'LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_quotation_marks'
+                    )
+                )
+                ->setIcon($iconFactory->getIcon('insert-quotation-marks', Icon::SIZE_SMALL));
+
+            $buttonMap = [
+                $insertSoftHyphen,
+                $insertSuperscript,
+                $insertSubscript,
+                $insertQuotationMarks,
+            ];
+
+            $pos = max(array_keys($buttons[ButtonBar::BUTTON_POSITION_LEFT]));
+
+            foreach ($buttonMap as $key => $button) {
+                $buttons[ButtonBar::BUTTON_POSITION_LEFT][$pos + $key + 1][] = $button;
+            }
         }
 
         $event->setButtons($buttons);

@@ -3,11 +3,22 @@
     <file source-language="en" datatype="plaintext" original="messages" product-name="shyguy" target-language="de">
         <header/>
         <body>
-
-            <trans-unit id="set_hyphen">
-                <target>Bedingter Trennstrich</target>
-            </trans-unit>
-
+			<trans-unit id="set_hyphen">
+				<source>Insert Soft Hyphen</source>
+				<target>Bedingter Trennstrich</target>
+			</trans-unit>
+			<trans-unit id="set_supercript">
+				<source>Set selection as superscript</source>
+				<target>Auswahl hochstellen</target>
+			</trans-unit>
+			<trans-unit id="set_subscript">
+				<source>Set selection as subscript</source>
+				<target>Auswahl tiefstellen</target>
+			</trans-unit>
+			<trans-unit id="set_quotation_marks">
+				<source>wrap selection in quotation marks</source>
+				<target>Anführungszeichen einfügen</target>
+			</trans-unit>
         </body>
     </file>
 </xliff>

@@ -3,11 +3,18 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2017-02-07T11:13:04Z" product-name="shyguy">
 		<header/>
 		<body>
-
 			<trans-unit id="set_hyphen">
 				<source>Insert Soft Hyphen</source>
 			</trans-unit>
-
+			<trans-unit id="set_supercript">
+				<source>Set selection as superscript</source>
+			</trans-unit>
+			<trans-unit id="set_subscript">
+				<source>Set selection as subscript</source>
+			</trans-unit>
+			<trans-unit id="set_quotation_marks">
+				<source>wrap selection in quotation marks</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
