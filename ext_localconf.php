@@ -9,9 +9,9 @@ call_user_func(
          */
         $pngIcons = [
             'insert-soft-hyphen' => 'shy.png',
-            'insert-superscript' => 'superscript.png',
-            'insert-subscript' => 'subscript.png',
-            'insert-quotation-marks' => 'quotes.png',
+            'insert-superscript' => 'superscript.svg',
+            'insert-subscript' => 'subscript.svg',
+            'insert-quotation-marks' => 'quotes.svg',
         ];
 
         $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
