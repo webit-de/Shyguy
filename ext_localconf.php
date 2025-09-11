@@ -7,19 +7,42 @@ call_user_func(
         /**
          * Add/register icons
          */
-        $pngIcons = [
-            'insert-soft-hyphen' => 'shy.png',
-            'insert-superscript' => 'superscript.svg',
-            'insert-subscript' => 'subscript.svg',
-            'insert-quotation-marks' => 'quotes.svg',
+        $extensionSpritePath = 'EXT:' . $extKey . '/Resources/Public/Icons/sprite.svg#';
+        $extensionSourcePath = 'EXT:' . $extKey . '/Resources/Public/Icons/';
+        $svgIcons = [
+            'actions-soft-hyphen' =>
+                [
+                    'sprite' => 'EXT:core/Resources/Public/Icons/T3Icons/sprites/actions.svg#',
+                    'source' => 'EXT:core/Resources/Public/Icons/T3Icons/svgs/actions/'
+                ],
+            'insert-superscript' =>
+                [
+                    'sprite' => $extensionSpritePath,
+                    'source' => $extensionSourcePath
+                ],
+            'insert-subscript' =>
+                [
+                    'sprite' => $extensionSpritePath,
+                    'source' => $extensionSourcePath
+                ],
+            'insert-quotation-marks' =>
+                [
+                    'sprite' => $extensionSpritePath,
+                    'source' => $extensionSourcePath
+                ],
         ];
 
         $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-        foreach ($pngIcons as $identifier => $path) {
+
+
+        foreach ($svgIcons as $identifier => $paths) {
             $iconRegistry->registerIcon(
                 $identifier,
-                \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-                ['source' => 'EXT:' . $extKey . '/Resources/Public/Icons/' . $path ]
+                \TYPO3\CMS\Core\Imaging\IconProvider\SvgSpriteIconProvider::class,
+                [
+                    'sprite' =>  $paths['sprite'] . $identifier,
+                    'source' =>  $paths['source'] . $identifier . '.svg'
+                ]
             );
         }
     }, 'shyguy'

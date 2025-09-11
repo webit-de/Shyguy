@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><svg class="icons" style="display: none;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <symbol id="insert-quotation-marks" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><text xml:space="preserve" font-size="40px" font-family="sans-serif" x="7" y="31">„“</text></g></symbol>
+    <symbol id="insert-subscript" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><text xml:space="preserve" font-size="40px" font-family="sans-serif" x="7" y="30">x<tspan font-size="40%" font-weight="bold" baseline-shift="-30%">2</tspan></text></g></symbol>
+    <symbol id="insert-superscript" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><text xml:space="preserve" font-size="40px" font-family="sans-serif" x="7" y="30">x<tspan font-size="40%" font-weight="bold" baseline-shift="100%">2</tspan></text></g></symbol>
+</svg>
