@@ -82,7 +82,20 @@ class InsertSoftHyphenHandler {
     let activeElement = document.activeElement;
     const domEditableElement = document.querySelector(".ck-editor__editable_inline");
 
-    if (activeElement.tagName.toLowerCase() === "input" || activeElement.tagName.toLowerCase() === "textarea") {
+    if (domEditableElement !== null && domEditableElement.ckeditorInstance.editing.view.document.isFocused === true) {
+      const editorInstance = domEditableElement.ckeditorInstance;
+
+      editorInstance.model.change(writer => {
+        const startPosition = editorInstance.model.document.selection.getFirstPosition();
+        const endPosition = editorInstance.model.document.selection.getLastPosition();
+
+        // order of insertion is important due to shift after inserting characters
+        editorInstance.model.insertContent(writer.createText('“'), endPosition); // first end character
+        editorInstance.model.insertContent(writer.createText('„'), startPosition); // then start character
+      });
+
+      editorInstance.editing.view.focus();
+    } else if (activeElement.tagName.toLowerCase() === "input" || activeElement.tagName.toLowerCase() === "textarea") {
       let activeElementRange = this.getCaretPosition(activeElement);
       activeElement.value = this.wrapAroundRange(activeElement.value, activeElementRange["start"], activeElementRange["end"], "„", "“");
       this.dispatchChangeEvents(activeElement);
