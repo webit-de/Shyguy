@@ -5,67 +5,56 @@ namespace WapplerSystems\Shyguy\EventListener;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Backend\Template\Components\ModifyButtonBarEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+#[AsEventListener(
+    identifier: 'shyguy/button-bar'
+)]
 class ShyguyButtonBar
 {
+    public function __construct(
+        protected readonly IconFactory $iconFactory,
+        protected readonly PageRenderer $pageRenderer,
+    ) {}
+
     public function __invoke(ModifyButtonBarEvent $event): void
     {
-        /** @var PageRenderer $pageRenderer */
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadJavaScriptModule('@wapplersystems/shyguy/Shyguy.js');
+        $this->pageRenderer->loadJavaScriptModule('@wapplersystems/shyguy/Shyguy.js');
 
         $buttons = $event->getButtons();
         $saveButton = $buttons[ButtonBar::BUTTON_POSITION_LEFT][2][0] ?? null;
 
         if ($saveButton instanceof InputButton && $saveButton->getName() === '_savedok') {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+            $lang = $this->getLanguageService();
+            $buttonBar = $event->getButtonBar();
 
-            $insertSoftHyphen = $event->getButtonBar()->makeLinkButton()
+            $insertSoftHyphen = $buttonBar->makeLinkButton()
                 ->setHref('#insertSoftHyphen')
-                ->setTitle(
-                    $GLOBALS['LANG']->sL(
-                        'LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_hyphen'
-                    )
-                )
-                ->setIcon($iconFactory->getIcon('actions-soft-hyphen', IconSize::SMALL))
+                ->setTitle($lang->sL('LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_hyphen'))
+                ->setIcon($this->iconFactory->getIcon('actions-soft-hyphen', IconSize::SMALL))
                 ->setShowLabelText(true);
 
-            $insertSuperscript = $event->getButtonBar()->makeLinkButton()
+            $insertSuperscript = $buttonBar->makeLinkButton()
                 ->setHref('#insertSuperscript')
-                ->setTitle(
-                    $GLOBALS['LANG']->sL(
-                        'LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_supercript'
-                    )
-                )
-                ->setIcon($iconFactory->getIcon('insert-superscript', IconSize::SMALL))
+                ->setTitle($lang->sL('LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_supercript'))
+                ->setIcon($this->iconFactory->getIcon('insert-superscript', IconSize::SMALL))
                 ->setShowLabelText(true);
 
-
-            $insertSubscript = $event->getButtonBar()->makeLinkButton()
+            $insertSubscript = $buttonBar->makeLinkButton()
                 ->setHref('#insertSubscript')
-                ->setTitle(
-                    $GLOBALS['LANG']->sL(
-                        'LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_subscript'
-                    )
-                )
-                ->setIcon($iconFactory->getIcon('insert-subscript', IconSize::SMALL))
+                ->setTitle($lang->sL('LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_subscript'))
+                ->setIcon($this->iconFactory->getIcon('insert-subscript', IconSize::SMALL))
                 ->setShowLabelText(true);
 
-
-            $insertQuotationMarks = $event->getButtonBar()->makeLinkButton()
+            $insertQuotationMarks = $buttonBar->makeLinkButton()
                 ->setHref('#insertQuotationMarks')
-                ->setTitle(
-                    $GLOBALS['LANG']->sL(
-                        'LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_quotation_marks'
-                    )
-                )
-                ->setIcon($iconFactory->getIcon('insert-quotation-marks', IconSize::SMALL))
+                ->setTitle($lang->sL('LLL:EXT:shyguy/Resources/Private/Language/locallang.xlf:set_quotation_marks'))
+                ->setIcon($this->iconFactory->getIcon('insert-quotation-marks', IconSize::SMALL))
                 ->setShowLabelText(true);
-
 
             $buttonMap = [
                 $insertSoftHyphen,
@@ -73,6 +62,13 @@ class ShyguyButtonBar
                 $insertSubscript,
                 $insertQuotationMarks,
             ];
+
+            foreach ($buttonMap as $button) {
+                $icon = $button->getIcon();
+                if ($icon !== null) {
+                    $icon->setMarkup($icon->getMarkup('inline'));
+                }
+            }
 
             $pos = max(array_keys($buttons[ButtonBar::BUTTON_POSITION_LEFT]));
 
@@ -82,5 +78,10 @@ class ShyguyButtonBar
         }
 
         $event->setButtons($buttons);
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
